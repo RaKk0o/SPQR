@@ -56,5 +56,13 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+    if 'chat' in message.content.lower():
+        api_key = os.getenv('CAT_API_KEY')
+        response = requests.get('https://api.thecatapi.com/v1/images/search', headers={'x-api-key': api_key})
+        data = response.json()
+        await ctx.send(data[0]['url'])
+
+    if 'fee' in message.content.lower():
+        await ctx.send('TA GUEULE!')
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

@@ -43,5 +43,18 @@ async def duck(ctx):
     data = response.json()
     await ctx.send(data['url'])
 
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    
+    # Vérifier si le message contient le mot "coin"
+    if 'coin' in message.content.lower():
+        response = requests.get('https://random-d.uk/api/v2/quack')
+        data = response.json()
+        await message.channel.send(data['url'])
+
+    await bot.process_commands(message)
+
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

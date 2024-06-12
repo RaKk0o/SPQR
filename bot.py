@@ -25,7 +25,7 @@ bot = commands.Bot(command_prefix='!', intents=intents, help_command=CustomHelpC
 async def on_ready():
     print(f'Bot connecté en tant que {bot.user}')
 
-@bot.command(name='hello')
+@bot.command(name='hello', help='Dit bonjour, il est bien élevé.')
 async def hello(ctx):
     await ctx.send('Salut les espéquhériens!')
 

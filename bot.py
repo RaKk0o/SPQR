@@ -19,3 +19,6 @@ async def on_ready():
 @bot.command(name='hello')
 async def hello(ctx):
     await ctx.send('Salut les espéquhériens!')
+
+token = os.getenv('DISCORD_TOKEN')
+bot.run(token)

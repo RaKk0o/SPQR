@@ -62,7 +62,7 @@ async def on_message(message):
         data = response.json()
         await ctx.send(data[0]['url'])
 
-    if 'fee' in message.content.lower():
-        await ctx.send('TA GUEULE!')
+    if 'fee' in message.content.lower() or "fée" in message.content.lower():
+        await message.channel.send('TA GUEULE!')
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

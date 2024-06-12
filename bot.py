@@ -3,6 +3,7 @@ import random
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
 
@@ -31,12 +32,10 @@ async def hello(ctx):
 
 @bot.command(name='chat', help="Envoie une photo aléatoire de chat.")
 async def cat(ctx):
-    cat_images = [
-        "https://cataas.com/cat",
-        "https://cataas.com/cat/cute",
-        "https://cataas.com/cat/funny"
-    ]
-    await ctx.send(random.choice(cat_images))
+    api_key = os.getenv('CAT_API_KEY')
+    response = requests.get('https://api.thecatapi.com/v1/images/search', headers={'x-api-key': api_key})
+    data = response.json()
+    await ctx.send(data[0]['url'])
 
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

@@ -64,5 +64,16 @@ async def on_message(message):
 
     if 'fee' in message.content.lower() or "fée" in message.content.lower():
         await message.channel.send('TA GUEULE!')
+
+def send_daily_gif():
+    channel_id = os.getenv('CHANNEL_ID')
+    gif_url = "https://tenor.com/view/a-roulette-kaamelott-gif-25967290"
+    channel = bot.get_channel(channel_id)
+    if channel:
+        asyncio.run_coroutine_threadsafe(channel.send(gif_url), bot.loop)
+
+scheduler = AsyncIOScheduler()
+scheduler.add_job(send_daily_gif, CronTrigger(hour=15, minute=0, second=0, timezone='GMT'))
+
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

@@ -29,5 +29,14 @@ async def on_ready():
 async def hello(ctx):
     await ctx.send('Salut les espéquhériens!')
 
+@bot.command(name='chat', help="Envoie une photo aléatoire de chat.")
+async def cat(ctx):
+    cat_images = [
+        "https://cataas.com/cat",
+        "https://cataas.com/cat/cute",
+        "https://cataas.com/cat/funny"
+    ]
+    await ctx.send(random.choice(cat_images))
+
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

@@ -37,5 +37,11 @@ async def cat(ctx):
     data = response.json()
     await ctx.send(data[0]['url'])
 
+@bot.command(name='canard', help="Envoie une photo aléatoire de canard.")
+async def duck(ctx):
+    response = requests.get('https://random-d.uk/api/v2/quack')
+    data = response.json()
+    await ctx.send(data['url'])
+
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

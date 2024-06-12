@@ -60,7 +60,7 @@ async def on_message(message):
         api_key = os.getenv('CAT_API_KEY')
         response = requests.get('https://api.thecatapi.com/v1/images/search', headers={'x-api-key': api_key})
         data = response.json()
-        await ctx.send(data[0]['url'])
+        await message.channel.send(data[0]['url'])
 
     if 'fee' in message.content.lower() or "fée" in message.content.lower():
         await message.channel.send('TA GUEULE!')

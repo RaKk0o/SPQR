@@ -34,20 +34,33 @@ async def on_ready():
 @bot.tree.command(name="spqr", description="Vérifiez la signification de l'anagramme SPQR")
 @app_commands.describe(s="Lettre S", p="Lettre P", q="Lettre Q", r="Lettre R")
 async def spqr(interaction: discord.Interaction, s: str, p: str, q: str, r: str):
+    user_id = interaction.user.id
+    current_time = time.time()
+    cooldown = 24 * 60 * 60  # 24 heures en secondes
+
+    if user_id in last_used:
+        elapsed_time = current_time - last_used[user_id]
+        if elapsed_time < cooldown:
+            remaining_time = int((cooldown - elapsed_time) / 60)  # Convertir en minutes
+            await interaction.response.send_message(f"Vous devez attendre {remaining_time} minutes avant de pouvoir réutiliser cette commande.", ephemeral=True)
+            return
+
+    # Mettre à jour l'horodatage de la dernière utilisation
+    last_used[user_id] = current_time
+
     # Les valeurs correctes
     correct_values = {
-        'S': 's',
-        'P': 'p',
-        'Q': 'q',
-        'R': 'r'
+        'S': os.getenv('SPQR_S').lower(),
+        'P': os.getenv('SPQR_P').lower(),
+        'Q': os.getenv('SPQR_Q').lower(),
+        'R': os.getenv('SPQR_R').lower()
     }
 
     # Vérification des valeurs fournies
-    results = []
     if s.lower() == correct_values['S'] and p.lower() == correct_values['P'] and q.lower() == correct_values['Q'] and r.lower() == correct_values['R']:
-        results.append('Bonne réponse, tu viens de gagner 1 Million mon con !')
+        results = ['Bonne réponse, tu viens de gagner 1 Million mon con !']
     else:
-        results.append('Mauvaise réponse !')
+        results = [f'Mauvaise réponse ! Ce n\'est pas {s} {p} {q} {r}']
 
     # Envoi des résultats
     await interaction.response.send_message('\n'.join(results))

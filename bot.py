@@ -1,14 +1,11 @@
 import os
-import random
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
+from discord import app_commands
 from dotenv import load_dotenv
 import requests
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-import asyncio
-from discord_slash import SlashCommand, SlashContext
-from discord_slash.utils.manage_commands import create_option
 
 load_dotenv()
 
@@ -27,40 +24,16 @@ class CustomHelpCommand(commands.HelpCommand):
 
 bot = commands.Bot(command_prefix='!', intents=intents, help_command=CustomHelpCommand())
 
-slash = SlashCommand(bot, sync_commands=True)
+@bot.event
+async def on_ready():
+    print(f'Bot connecté en tant que {bot.user}')
+    await bot.tree.sync()
+    scheduler.start()
+    print("Scheduler started")
 
-# Définition de la commande /spqr
-@slash.slash(
-    name="spqr",
-    description="Vérifiez la signification de l'anagramme SPQR",
-    options=[
-        create_option(
-            name="s",
-            description="Lettre S",
-            option_type=3,
-            required=True
-        ),
-        create_option(
-            name="p",
-            description="Lettre P",
-            option_type=3,
-            required=True
-        ),
-        create_option(
-            name="q",
-            description="Lettre Q",
-            option_type=3,
-            required=True
-        ),
-        create_option(
-            name="r",
-            description="Lettre R",
-            option_type=3,
-            required=True
-        )
-    ]
-)
-async def spqr(ctx: SlashContext, s: str, p: str, q: str, r: str):
+@bot.tree.command(name="spqr", description="Vérifiez la signification de l'anagramme SPQR")
+@app_commands.describe(s="Lettre S", p="Lettre P", q="Lettre Q", r="Lettre R")
+async def spqr(interaction: discord.Interaction, s: str, p: str, q: str, r: str):
     # Les valeurs correctes
     correct_values = {
         'S': 'S',
@@ -92,11 +65,7 @@ async def spqr(ctx: SlashContext, s: str, p: str, q: str, r: str):
         results.append('R: Incorrect')
 
     # Envoi des résultats
-    await ctx.send('\n'.join(results))
-
-@bot.event
-async def on_ready():
-    print(f'Bot connecté en tant que {bot.user}')
+    await interaction.response.send_message('\n'.join(results))
 
 @bot.command(name='hello', help='Dit bonjour, il est bien élevé.')
 async def hello(ctx):
@@ -119,7 +88,7 @@ async def duck(ctx):
 async def on_message(message):
     if message.author == bot.user:
         return
-    
+
     # Vérifier si le message contient le mot "coin"
     if 'coin' in message.content.lower():
         response = requests.get('https://random-d.uk/api/v2/quack')
@@ -137,17 +106,15 @@ async def on_message(message):
     if 'fee' in message.content.lower() or "fée" in message.content.lower():
         await message.channel.send('TA GUEULE!')
 
-def send_daily_gif():
-    channel_id = os.getenv('CHANNEL_ID')
+async def send_daily_gif():
+    channel_id = int(os.getenv('CHANNEL_ID'))
     gif_url = "https://tenor.com/view/a-roulette-kaamelott-gif-25967290"
     channel = bot.get_channel(channel_id)
     if channel:
-        asyncio.run_coroutine_threadsafe(channel.send(gif_url), bot.loop)
+        await channel.send(gif_url)
 
 scheduler = AsyncIOScheduler()
-scheduler.add_job(send_daily_gif, CronTrigger(hour=15, minute=0, second=0, timezone='GMT'))
-
-
+scheduler.add_job(send_daily_gif, CronTrigger(hour=15, minute=0, second=0, timezone='Asia/Tokyo'))
 
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

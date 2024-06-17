@@ -31,6 +31,8 @@ async def on_ready():
     await bot.tree.sync()
     scheduler.start()
     print("Scheduler started")
+    
+last_used = {}
 
 @bot.tree.command(name="spqr", description="Vérifiez la signification de l'anagramme SPQR")
 @app_commands.describe(s="Lettre S", p="Lettre P", q="Lettre Q", r="Lettre R")

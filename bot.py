@@ -36,33 +36,18 @@ async def on_ready():
 async def spqr(interaction: discord.Interaction, s: str, p: str, q: str, r: str):
     # Les valeurs correctes
     correct_values = {
-        'S': 'S',
-        'P': 'P',
-        'Q': 'Q',
-        'R': 'R'
+        'S': 's',
+        'P': 'p',
+        'Q': 'q',
+        'R': 'r'
     }
 
     # Vérification des valeurs fournies
     results = []
-    if s.upper() == correct_values['S']:
-        results.append('S: Correct')
+    if s.lower() == correct_values['S'] and p.ulower() == correct_values['P'] and q.lower() == correct_values['Q'] and r.lower() == correct_values['R']:
+        results.append('Bonne réponse, tu viens de gagner 1 Million mon con !')
     else:
-        results.append('S: Incorrect')
-
-    if p.upper() == correct_values['P']:
-        results.append('P: Correct')
-    else:
-        results.append('P: Incorrect')
-
-    if q.upper() == correct_values['Q']:
-        results.append('Q: Correct')
-    else:
-        results.append('Q: Incorrect')
-
-    if r.upper() == correct_values['R']:
-        results.append('R: Correct')
-    else:
-        results.append('R: Incorrect')
+        results.append('Mauvaise réponse !')
 
     # Envoi des résultats
     await interaction.response.send_message('\n'.join(results))

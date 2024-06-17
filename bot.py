@@ -44,7 +44,7 @@ async def spqr(interaction: discord.Interaction, s: str, p: str, q: str, r: str)
 
     # Vérification des valeurs fournies
     results = []
-    if s.lower() == correct_values['S'] and p.ulower() == correct_values['P'] and q.lower() == correct_values['Q'] and r.lower() == correct_values['R']:
+    if s.lower() == correct_values['S'] and p.lower() == correct_values['P'] and q.lower() == correct_values['Q'] and r.lower() == correct_values['R']:
         results.append('Bonne réponse, tu viens de gagner 1 Million mon con !')
     else:
         results.append('Mauvaise réponse !')

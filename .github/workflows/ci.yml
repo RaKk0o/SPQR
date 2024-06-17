@@ -39,7 +39,7 @@ jobs:
         SPQR_S: ${{ secrets.SPQR_S}}
         SPQR_P: ${{ secrets.SPQR_P}}
         SPQR_Q: ${{ secrets.SPQR_Q}}
-        SPQR_R: ${{ secrets.SPQR_S}}
+        SPQR_R: ${{ secrets.SPQR_R}}
       run: |
         echo "Starting bot..."
         python bot.py

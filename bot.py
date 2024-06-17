@@ -53,10 +53,10 @@ async def spqr(interaction: discord.Interaction, s: str, p: str, q: str, r: str)
 
     # Les valeurs correctes
     correct_values = {
-        'S': string(os.getenv('SPQR_S')).lower(),
-        'P': string(os.getenv('SPQR_P')).lower(),
-        'Q': string(os.getenv('SPQR_Q')).lower(),
-        'R': string(os.getenv('SPQR_R')).lower()
+        'S': os.getenv('SPQR_S'),
+        'P': os.getenv('SPQR_P'),
+        'Q': os.getenv('SPQR_Q'),
+        'R': os.getenv('SPQR_R')
     }
 
     # Vérification des valeurs fournies

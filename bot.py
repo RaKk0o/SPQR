@@ -25,6 +25,73 @@ class CustomHelpCommand(commands.HelpCommand):
 
 bot = commands.Bot(command_prefix='!', intents=intents, help_command=CustomHelpCommand())
 
+slash = SlashCommand(bot, sync_commands=True)
+
+# Définition de la commande /spqr
+@slash.slash(
+    name="spqr",
+    description="Vérifiez la signification de l'anagramme SPQR",
+    options=[
+        create_option(
+            name="s",
+            description="Lettre S",
+            option_type=3,
+            required=True
+        ),
+        create_option(
+            name="p",
+            description="Lettre P",
+            option_type=3,
+            required=True
+        ),
+        create_option(
+            name="q",
+            description="Lettre Q",
+            option_type=3,
+            required=True
+        ),
+        create_option(
+            name="r",
+            description="Lettre R",
+            option_type=3,
+            required=True
+        )
+    ]
+)
+async def spqr(ctx: SlashContext, s: str, p: str, q: str, r: str):
+    # Les valeurs correctes
+    correct_values = {
+        'S': 'S',
+        'P': 'P',
+        'Q': 'Q',
+        'R': 'R'
+    }
+
+    # Vérification des valeurs fournies
+    results = []
+    if s.upper() == correct_values['S']:
+        results.append('S: Correct')
+    else:
+        results.append('S: Incorrect')
+
+    if p.upper() == correct_values['P']:
+        results.append('P: Correct')
+    else:
+        results.append('P: Incorrect')
+
+    if q.upper() == correct_values['Q']:
+        results.append('Q: Correct')
+    else:
+        results.append('Q: Incorrect')
+
+    if r.upper() == correct_values['R']:
+        results.append('R: Correct')
+    else:
+        results.append('R: Incorrect')
+
+    # Envoi des résultats
+    await ctx.send('\n'.join(results))
+
 @bot.event
 async def on_ready():
     print(f'Bot connecté en tant que {bot.user}')
@@ -77,6 +144,8 @@ def send_daily_gif():
 
 scheduler = AsyncIOScheduler()
 scheduler.add_job(send_daily_gif, CronTrigger(hour=15, minute=0, second=0, timezone='GMT'))
+
+
 
 token = os.getenv('DISCORD_TOKEN')
 bot.run(token)

@@ -31,7 +31,7 @@ async def on_ready():
     await bot.tree.sync()
     scheduler.start()
     print("Scheduler started")
-    
+
 last_used = {}
 
 @bot.tree.command(name="spqr", description="Vérifiez la signification de l'anagramme SPQR")
@@ -53,10 +53,10 @@ async def spqr(interaction: discord.Interaction, s: str, p: str, q: str, r: str)
 
     # Les valeurs correctes
     correct_values = {
-        'S': os.getenv('SPQR_S').lower(),
-        'P': os.getenv('SPQR_P').lower(),
-        'Q': os.getenv('SPQR_Q').lower(),
-        'R': os.getenv('SPQR_R').lower()
+        'S': string(os.getenv('SPQR_S')).lower(),
+        'P': string(os.getenv('SPQR_P')).lower(),
+        'Q': string(os.getenv('SPQR_Q')).lower(),
+        'R': string(os.getenv('SPQR_R')).lower()
     }
 
     # Vérification des valeurs fournies
